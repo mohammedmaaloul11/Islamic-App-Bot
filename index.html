@@ -3,166 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القرآن الكريم المتميز</title>
+    <title>تطبيق القرآن والأذكار</title>
     <style>
-        :root {
-            --gold: #f1c40f;
-            --diamond-edge: rgba(255, 255, 255, 0.6);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --dark-rect: rgba(0, 0, 0, 0.9);
-        }
-
+        :root { --gold: #f1c40f; --dark-rect: rgba(0, 0, 0, 0.9); }
         body {
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=2070');
-            background-size: cover; background-attachment: fixed; background-position: center;
-            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px;
-            display: flex; flex-direction: column; align-items: center; color: white;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=2070');
+            background-size: cover; background-attachment: fixed; font-family: 'Segoe UI', sans-serif;
+            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; color: white;
         }
-
-        .header h1 { color: var(--gold); text-shadow: 0 0 15px rgba(241, 196, 15, 0.5); text-align: center; }
-
         .container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
-
-        /* تصميم المربعات الرئيسية */
-        .main-card {
-            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 2px solid var(--diamond-edge); border-radius: 20px;
-            padding: 20px; display: flex; align-items: center; cursor: pointer;
-            transition: 0.4s; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        .diamond-card {
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,255,255,0.5); border-radius: 20px;
+            padding: 20px; display: flex; align-items: center; cursor: pointer; transition: 0.4s;
         }
-        .main-card:hover { border-color: var(--gold); transform: scale(1.02); background: rgba(255,255,255,0.15); }
-        .main-card i { font-size: 35px; margin-left: 15px; }
-        .main-card h2 { margin: 0; font-size: 19px; color: var(--gold); }
-        .main-card p { margin: 5px 0 0; font-size: 13px; color: #ddd; }
-
-        /* نافذة المحتوى */
+        .diamond-card:hover { border-color: var(--gold); transform: scale(1.02); }
         #overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 2000; padding: 20px; overflow-y: auto;
         }
-        .close-btn { background: var(--gold); color: black; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; position: sticky; top: 0; cursor: pointer; }
-
-        /* مستطيلات الأذكار السوداء */
         .zekr-rect {
-            background: var(--dark-rect); border: 1px solid #333; border-right: 6px solid var(--gold);
-            padding: 25px; border-radius: 15px; margin: 20px 0; line-height: 1.8;
-            font-size: 22px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            background: var(--dark-rect); border-right: 6px solid var(--gold);
+            padding: 25px; border-radius: 15px; margin-bottom: 20px;
+            line-height: 1.8; font-size: 22px; text-align: center;
         }
-        .count-tag { display: inline-block; margin-top: 15px; background: var(--gold); color: black; padding: 4px 12px; border-radius: 8px; font-weight: bold; font-size: 14px; }
-
-        /* تنسيق قائمة السور والتفسير */
-        .search-box { width: 90%; padding: 12px; border-radius: 10px; border: 2px solid var(--gold); background: transparent; color: white; margin: 15px 0; }
-        .list-item { padding: 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; }
+        .count-info { background: var(--gold); color: black; padding: 4px 12px; border-radius: 8px; font-weight: bold; margin-top: 10px; display: inline-block; font-size: 14px; }
+        .close-btn { background: var(--gold); color: black; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; position: sticky; top: 0; }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <h1>مصحف الختمة والأذكار 🌙</h1>
-    </div>
-
+    <h1 style="color:var(--gold); text-shadow: 0 0 10px rgba(241,196,15,0.5);">تطبيق القرآن والأذكار 🌙</h1>
     <div class="container">
-        <div class="main-card" onclick="openSection('surahs')">
-            <i>📖</i><div><h2>سور القرآن الكريم</h2><p>114 سورة كاملة للقراءة</p></div>
-        </div>
-
-        <div class="main-card" onclick="openSection('juz')">
-            <i>🔢</i><div><h2>الأجزاء والأحزاب</h2><p>تقسيم المصحف لمتابعة الختمة</p></div>
-        </div>
-
-        <div class="main-card" onclick="openSection('tafsir')">
-            <i>📚</i><div><h2>محرك التفسير</h2><p>ابحث عن تفسير أي سورة</p></div>
-        </div>
-
-        <div class="main-card" onclick="openSection('morning')">
-            <i>☀️</i><div><h2>أذكار الصباح</h2><p>نصوص كاملة بخط واضح</p></div>
-        </div>
-
-        <div class="main-card" onclick="openSection('evening')">
-            <i>🌙</i><div><h2>أذكار المساء</h2><p>تحصين المساء المكتوب</p></div>
-        </div>
-
-        <div class="main-card" onclick="openSection('sleep')">
-            <i>💤</i><div><h2>أذكار النوم والليل</h2><p>سورة الملك وأدعية النوم</p></div>
-        </div>
-
-        <div class="main-card" onclick="alert('جاري تشغيل حساس القبلة...')">
-            <i>🕋</i><div><h2>اتجاه القبلة</h2><p>بوصلة مكة المكرمة</p></div>
-        </div>
+        <div class="diamond-card" onclick="openS('quran')"><i>📖</i><div style="margin-right:15px;"><h2>سور القرآن</h2><p>114 سورة كاملة</p></div></div>
+        <div class="diamond-card" onclick="openS('morning')"><i>☀️</i><div style="margin-right:15px;"><h2>أذكار الصباح</h2><p>تحصين كامل بمستطيلات سوداء</p></div></div>
+        <div class="diamond-card" onclick="openS('evening')"><i>🌙</i><div style="margin-right:15px;"><h2>أذكار المساء</h2><p>حفظ وهدوء للنفس</p></div></div>
+        <div class="diamond-card" onclick="openS('sleep')"><i>💤</i><div style="margin-right:15px;"><h2>أذكار النوم</h2><p>سورة الملك وأدعية الليل</p></div></div>
     </div>
-
     <div id="overlay">
-        <button class="close-btn" onclick="closeOverlay()">العودة للقائمة الرئيسية ✖</button>
-        <div id="dynamic-content" style="margin-top: 20px;"></div>
+        <button class="close-btn" onclick="document.getElementById('overlay').style.display='none'">رجوع ✖</button>
+        <div id="content" style="margin-top:20px;"></div>
     </div>
-
     <script>
-        const overlay = document.getElementById('overlay');
-        const dynamicContent = document.getElementById('dynamic-content');
-
-        const azkarData = {
-            morning: [
-                { t: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ.", c: 1 },
-                { t: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ.", c: 3 },
-                { t: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ (آية الكرسي)", c: 1 }
-            ],
-            evening: [
-                { t: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ.", c: 1 },
-                { t: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", c: 3 }
-            ],
-            sleep: [
-                { t: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ.", c: 1 },
-                { t: "قراءة سورة الملك (المنجية من عذاب القبر).", c: 1 },
-                { t: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.", c: 3 }
-            ]
+        const data = {
+            morning: [{t:"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ", c:1}, {t:"بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ", c:3}],
+            evening: [{t:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", c:1}, {t:"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ", c:3}],
+            sleep: [{t:"بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي", c:1}, {t:"سورة الملك (المنجية)", c:1}]
         };
-
-        function closeOverlay() { overlay.style.display = 'none'; }
-
-        async function openSection(type) {
-            overlay.style.display = 'block';
-            dynamicContent.innerHTML = "جاري التحميل...";
-
-            if (['morning', 'evening', 'sleep'].includes(type)) {
-                let html = `<h2>أذكار مكتوبة</h2>`;
-                azkarData[type].forEach(z => {
-                    html += `<div class="zekr-rect">${z.t}<br><span class="count-tag">كرر: ${z.c}</span></div>`;
-                });
-                dynamicContent.innerHTML = html;
-            } 
-            else if (type === 'surahs') {
+        async function openS(type) {
+            const list = document.getElementById('content');
+            document.getElementById('overlay').style.display='block';
+            list.innerHTML = "جاري التحميل...";
+            if(data[type]) {
+                let h = "<h2>الأذكار المكتوبة</h2>";
+                data[type].forEach(z => h += `<div class="zekr-rect">${z.t}<br><span class="count-info">تكرار: ${z.c}</span></div>`);
+                list.innerHTML = h;
+            } else if(type === 'quran') {
                 const res = await fetch('https://api.alquran.cloud/v1/surah');
-                const data = await res.json();
-                let html = "<h2>قائمة السور</h2>";
-                data.data.forEach(s => html += `<div class="list-item"><span>${s.number}. ${s.name}</span></div>`);
-                dynamicContent.innerHTML = html;
-            }
-            else if (type === 'tafsir') {
-                dynamicContent.innerHTML = `
-                    <h2>البحث عن تفسير</h2>
-                    <input type="text" id="sQuery" class="search-box" placeholder="اكتب اسم السورة..">
-                    <button onclick="searchTafsir()" style="width:100%; padding:10px; background:var(--gold); border:none; border-radius:10px;">بحث</button>
-                    <div id="tRes"></div>`;
-            }
-            else if (type === 'juz') {
-                let html = "<h2>أجزاء القرآن الكريم</h2>";
-                for(let i=1; i<=30; i++) html += `<div class="list-item">الجزء رقم ${i}</div>`;
-                dynamicContent.innerHTML = html;
-            }
-        }
-
-        async function searchTafsir() {
-            const q = document.getElementById('sQuery').value;
-            const res = await fetch('https://api.alquran.cloud/v1/surah');
-            const data = await res.json();
-            const s = data.data.find(i => i.name.includes(q));
-            if(s) {
-                const tr = await fetch(`https://api.alquran.cloud/v1/surah/${s.number}/ar.jalalayn`);
-                const td = await tr.json();
-                let h = `<h3>تفسير سورة ${s.name}</h3>`;
-                td.data.ayahs.forEach(a => h += `<div class="zekr-rect" style="font-size:16px;">${a.text}</div>`);
-                document.getElementById('tRes').innerHTML = h;
+                const d = await res.json();
+                let h = "<h2>سور القرآن الكريم</h2>";
+                d.data.forEach(s => h += `<div style="padding:15px; border-bottom:1px solid #333;">${s.number}. ${s.name}</div>`);
+                list.innerHTML = h;
             }
         }
     </script>
