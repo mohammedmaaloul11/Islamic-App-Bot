@@ -3,29 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القرآن والأذكار</title>
+    <title>تطبيق القرآن الكريم المتميز</title>
     <style>
-        body { background: #0f170f; color: #d4af37; font-family: sans-serif; text-align: center; padding: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .item { background: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; padding: 20px; border-radius: 15px; cursor: pointer; }
-        .item:hover { background: #d4af37; color: #000; }
-        .header { margin-bottom: 30px; }
-        h1 { font-size: 20px; }
+        :root {
+            --glass: rgba(255, 255, 255, 0.12);
+            --diamond: rgba(255, 255, 255, 0.7);
+            --gold: #f1c40f;
+        }
+
+        body {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .header h1 {
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(241, 196, 15, 0.5);
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* تصميم الكارت الألماسي الرأسي */
+        .diamond-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--diamond);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.4s ease;
+        }
+
+        .diamond-card:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .icon-box {
+            font-size: 28px;
+            background: rgba(241, 196, 15, 0.15);
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            margin-left: 15px;
+        }
+
+        .text-box h2 { margin: 0; font-size: 18px; }
+        .text-box p { margin: 5px 0 0; font-size: 13px; color: #ccc; }
+
+        /* نافذة العرض المنبثقة */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .search-box {
+            width: 90%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid var(--gold);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            float: left;
+        }
     </style>
 </head>
 <body>
+
     <div class="header">
-        <h1>🌙 تطبيق القرآن والأذكار</h1>
-        <p>اختر القسم الذي تريده:</p>
+        <h1>تطبيق القرآن الشامل 🌙</h1>
     </div>
 
-    <div class="grid">
-        <div class="item" onclick="alert('سورة البقرة...')">📖 القرآن الكريم</div>
-        <div class="item" onclick="alert('أذكار الصباح...')">☀️ أذكار الصباح</div>
-        <div class="item" onclick="alert('أذكار المساء...')">🌙 أذكار المساء</div>
-        <div class="item" onclick="alert('حصن المسلم...')">🛡️ حصن المسلم</div>
-        <div class="item" onclick="alert('تفسير...')">📝 تفسير القرآن</div>
-        <div class="item" onclick="alert('القبلة...')">🕋 اتجاه القبلة</div>
+    <div class="container">
+        <div class="diamond-card" onclick="showList('quran')">
+            <div class="icon-box">📖</div>
+            <div class="text-box">
+                <h2>القرآن الكريم</h2>
+                <p>قراءة السور والأجزاء</p>
+            </div>
+        </div>
+
+        <div class="diamond-card" onclick="showTafsirSearch()">
+            <div class="icon-box">📚</div>
+            <div class="text-box">
+                <h2>تفسير القرآن</h2>
+                <p>ابحث عن تفسير أي سورة</p>
+            </div>
+        </div>
+
+        <div class="diamond-card" onclick="alert('جاري تجهيز الأذكار...')">
+            <div class="icon-box">☀️</div>
+            <div class="text-box">
+                <h2>الأذكار اليومية</h2>
+                <p>الصباح، المساء، والنوم</p>
+            </div>
+        </div>
+
+        <div class="diamond-card" onclick="alert('جاري تجهيز الأدعية...')">
+            <div class="icon-box">🤲</div>
+            <div class="text-box">
+                <h2>الأدعية والرقية</h2>
+                <p>حصن المسلم كاملاً</p>
+            </div>
+        </div>
+
+        <div class="diamond-card" onclick="alert('جاري تشغيل البوصلة...')">
+            <div class="icon-box">🕋</div>
+            <div class="text-box">
+                <h2>اتجاه القبلة</h2>
+                <p>تحديد موقع الكعبة</p>
+            </div>
+        </div>
     </div>
+
+    <div id="overlay">
+        <button class="close-btn" onclick="closeOverlay()">إغلاق ✖</button>
+        <div id="content-area" style="margin-top: 60px;"></div>
+    </div>
+
+    <script>
+        const contentArea = document.getElementById('content-area');
+        const overlay = document.getElementById('overlay');
+
+        function closeOverlay() { overlay.style.display = 'none'; }
+
+        // وظيفة عرض السور
+        async function showList(type) {
+            overlay.style.display = 'block';
+            contentArea.innerHTML = "<h2>جاري تحميل السور...</h2>";
+            try {
+                const res = await fetch('https://api.alquran.cloud/v1/surah');
+                const data = await res.json();
+                let html = "<h2>قائمة السور</h2>";
+                data.data.forEach(s => {
+                    html += `<div style="padding:15px; border-bottom:1px solid #333;">${s.number}. ${s.name}</div>`;
+                });
+                contentArea.innerHTML = html;
+            } catch(e) { contentArea.innerHTML = "خطأ في التحميل"; }
+        }
+
+        // وظيفة البحث عن التفسير
+        function showTafsirSearch() {
+            overlay.style.display = 'block';
+            contentArea.innerHTML = `
+                <h2>محرك البحث في التفسير</h2>
+                <input type="text" id="sInput" class="search-box" placeholder="اكتب اسم السورة..">
+                <button onclick="doTafsir()" style="width:100%; padding:10px; background:var(--gold); border:none; border-radius:10px;">بحث</button>
+                <div id="tResult" style="margin-top:20px;"></div>
+            `;
+        }
+
+        async function doTafsir() {
+            const name = document.getElementById('sInput').value;
+            const res = await fetch('https://api.alquran.cloud/v1/surah');
+            const data = await res.json();
+            const s = data.data.find(i => i.name.includes(name));
+            if(s) {
+                const tres = await fetch(`https://api.alquran.cloud/v1/surah/${s.number}/ar.jalalayn`);
+                const tdata = await tres.json();
+                let html = `<h3>تفسير سورة ${s.name}</h3>`;
+                tdata.data.ayahs.forEach(a => {
+                    html += `<p style="background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;">${a.text}</p>`;
+                });
+                document.getElementById('tResult').innerHTML = html;
+            }
+        }
+    </script>
 </body>
 </html>
