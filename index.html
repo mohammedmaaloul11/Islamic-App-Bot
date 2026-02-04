@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق القرآن والأذكار</title>
+    <title>مصحف الختمة والأذكار</title>
     <style>
         :root { --gold: #f1c40f; --dark-rect: rgba(0, 0, 0, 0.9); }
         body {
@@ -25,44 +25,70 @@
         .zekr-rect {
             background: var(--dark-rect); border-right: 6px solid var(--gold);
             padding: 25px; border-radius: 15px; margin-bottom: 20px;
-            line-height: 1.8; font-size: 22px; text-align: center;
+            line-height: 1.8; font-size: 22px; text-align: center; color: white;
         }
         .count-info { background: var(--gold); color: black; padding: 4px 12px; border-radius: 8px; font-weight: bold; margin-top: 10px; display: inline-block; font-size: 14px; }
         .close-btn { background: var(--gold); color: black; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; position: sticky; top: 0; }
     </style>
 </head>
 <body>
-    <h1 style="color:var(--gold); text-shadow: 0 0 10px rgba(241,196,15,0.5);">تطبيق القرآن والأذكار 🌙</h1>
+    <h1 style="color:var(--gold); text-align:center;">مصحف الختمة والأذكار 🌙</h1>
     <div class="container">
-        <div class="diamond-card" onclick="openS('quran')"><i>📖</i><div style="margin-right:15px;"><h2>سور القرآن</h2><p>114 سورة كاملة</p></div></div>
-        <div class="diamond-card" onclick="openS('morning')"><i>☀️</i><div style="margin-right:15px;"><h2>أذكار الصباح</h2><p>تحصين كامل بمستطيلات سوداء</p></div></div>
-        <div class="diamond-card" onclick="openS('evening')"><i>🌙</i><div style="margin-right:15px;"><h2>أذكار المساء</h2><p>حفظ وهدوء للنفس</p></div></div>
-        <div class="diamond-card" onclick="openS('sleep')"><i>💤</i><div style="margin-right:15px;"><h2>أذكار النوم</h2><p>سورة الملك وأدعية الليل</p></div></div>
+        <div class="diamond-card" onclick="openS('quran')"><i>📖</i><div style="margin-right:15px;"><h2>سور القرآن الكريم</h2><p>114 سورة كاملة للقراءة</p></div></div>
+        <div class="diamond-card" onclick="openS('morning')"><i>☀️</i><div style="margin-right:15px;"><h2>أذكار الصباح</h2><p>مكتوبة في مستطيلات سوداء</p></div></div>
+        <div class="diamond-card" onclick="openS('evening')"><i>🌙</i><div style="margin-right:15px;"><h2>أذكار المساء</h2><p>تحصين المساء المكتوب</p></div></div>
+        <div class="diamond-card" onclick="openS('sleep')"><i>💤</i><div style="margin-right:15px;"><h2>أذكار النوم والليل</h2><p>سورة الملك وأدعية النوم</p></div></div>
     </div>
+
     <div id="overlay">
-        <button class="close-btn" onclick="document.getElementById('overlay').style.display='none'">رجوع ✖</button>
+        <button class="close-btn" onclick="document.getElementById('overlay').style.display='none'">رجوع للقائمة ✖</button>
         <div id="content" style="margin-top:20px;"></div>
     </div>
+
     <script>
-        const data = {
-            morning: [{t:"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ", c:1}, {t:"بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ", c:3}],
-            evening: [{t:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ", c:1}, {t:"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ", c:3}],
-            sleep: [{t:"بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي", c:1}, {t:"سورة الملك (المنجية)", c:1}]
+        const azkar = {
+            morning: [
+                {t: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ.", c: 1},
+                {t: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ.", c: 3},
+                {t: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ (آية الكرسي)", c: 1}
+            ],
+            evening: [
+                {t: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ.", c: 1},
+                {t: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", c: 3}
+            ],
+            sleep: [
+                {t: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ.", c: 1},
+                {t: "قراءة سورة الملك (المنجية من عذاب القبر).", c: 1},
+                {t: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.", c: 3}
+            ]
         };
+
         async function openS(type) {
             const list = document.getElementById('content');
             document.getElementById('overlay').style.display='block';
-            list.innerHTML = "جاري التحميل...";
-            if(data[type]) {
-                let h = "<h2>الأذكار المكتوبة</h2>";
-                data[type].forEach(z => h += `<div class="zekr-rect">${z.t}<br><span class="count-info">تكرار: ${z.c}</span></div>`);
+            list.innerHTML = "<h3 style='text-align:center;'>جاري تحميل البيانات...</h3>";
+            
+            if(azkar[type]) {
+                let h = `<h2 style='text-align:center; color:var(--gold);'>الأذكار المكتوبة</h2>`;
+                azkar[type].forEach(z => {
+                    h += `<div class="zekr-rect">${z.t}<br><span class="count-info">تكرار: ${z.c}</span></div>`;
+                });
                 list.innerHTML = h;
-            } else if(type === 'quran') {
-                const res = await fetch('https://api.alquran.cloud/v1/surah');
-                const d = await res.json();
-                let h = "<h2>سور القرآن الكريم</h2>";
-                d.data.forEach(s => h += `<div style="padding:15px; border-bottom:1px solid #333;">${s.number}. ${s.name}</div>`);
-                list.innerHTML = h;
+            } 
+            else if(type === 'quran') {
+                try {
+                    const res = await fetch('https://api.alquran.cloud/v1/surah');
+                    const d = await res.json();
+                    let h = "<h2 style='text-align:center; color:var(--gold);'>سور القرآن الكريم</h2>";
+                    d.data.forEach(s => {
+                        h += `<div class="zekr-rect" style="font-size:18px; cursor:pointer;" onclick="alert('جاري تجهيز نص سورة ${s.name}...')">
+                                <span>${s.number}. ${s.name}</span>
+                              </div>`;
+                    });
+                    list.innerHTML = h;
+                } catch (e) {
+                    list.innerHTML = "حدث خطأ في جلب السور، تأكد من الاتصال بالإنترنت.";
+                }
             }
         }
     </script>
