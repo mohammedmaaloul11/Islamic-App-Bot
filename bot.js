@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf('8509384166:AAEScLCSXKB-ciAwm6G_N8TIAqaoOEwwpPo');
 
 // تشغيل ملفات الواجهة (HTML)
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,3 +23,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
