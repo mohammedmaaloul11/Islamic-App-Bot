@@ -3,93 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مصحف الختمة والأذكار</title>
+    <title>تطبيق المسلم الجزائري الشامل 🌙</title>
     <style>
-        :root { --gold: #f1c40f; --dark-rect: rgba(0, 0, 0, 0.9); }
+        :root { --gold: #f1c40f; --card-bg: rgba(255, 255, 255, 0.1); }
         body {
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=2070');
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=2070');
             background-size: cover; background-attachment: fixed; font-family: 'Segoe UI', sans-serif;
             margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; color: white;
         }
         .container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
-        .diamond-card {
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
-            border: 2px solid rgba(255,255,255,0.5); border-radius: 20px;
-            padding: 20px; display: flex; align-items: center; cursor: pointer; transition: 0.4s;
-        }
+        .diamond-card { background: var(--card-bg); backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.5); border-radius: 20px; padding: 20px; display: flex; align-items: center; cursor: pointer; transition: 0.4s; }
         .diamond-card:hover { border-color: var(--gold); transform: scale(1.02); }
-        #overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 2000; padding: 20px; overflow-y: auto;
-        }
-        .zekr-rect {
-            background: var(--dark-rect); border-right: 6px solid var(--gold);
-            padding: 25px; border-radius: 15px; margin-bottom: 20px;
-            line-height: 1.8; font-size: 22px; text-align: center; color: white;
-        }
-        .count-info { background: var(--gold); color: black; padding: 4px 12px; border-radius: 8px; font-weight: bold; margin-top: 10px; display: inline-block; font-size: 14px; }
-        .close-btn { background: var(--gold); color: black; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; position: sticky; top: 0; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 2000; padding: 20px; overflow-y: auto; text-align: center; }
+        .quran-img { width: 100%; max-width: 450px; border-radius: 10px; border: 2px solid var(--gold); margin-bottom: 20px; }
+        .nav-btn { background: var(--gold); color: black; border: none; padding: 12px; border-radius: 10px; width: 48%; font-weight: bold; cursor: pointer; }
+        .close-btn { background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+        .prayer-card { background: rgba(241, 196, 15, 0.15); border: 1px solid var(--gold); padding: 15px; border-radius: 15px; margin: 10px 0; display: flex; justify-content: space-between; font-size: 1.2rem; }
+        .search-box, .city-select { width: 90%; padding: 15px; border-radius: 10px; border: 2px solid var(--gold); background: black; color: white; margin-bottom: 15px; font-size: 18px; }
     </style>
 </head>
 <body>
-    <h1 style="color:var(--gold); text-align:center;">مصحف الختمة والأذكار 🌙</h1>
+    <h1 style="color:var(--gold); text-shadow: 0 0 10px rgba(241,196,15,0.5);">المسلم الشامل - الجزائر 🇩🇿</h1>
+    
     <div class="container">
-        <div class="diamond-card" onclick="openS('quran')"><i>📖</i><div style="margin-right:15px;"><h2>سور القرآن الكريم</h2><p>114 سورة كاملة للقراءة</p></div></div>
-        <div class="diamond-card" onclick="openS('morning')"><i>☀️</i><div style="margin-right:15px;"><h2>أذكار الصباح</h2><p>مكتوبة في مستطيلات سوداء</p></div></div>
-        <div class="diamond-card" onclick="openS('evening')"><i>🌙</i><div style="margin-right:15px;"><h2>أذكار المساء</h2><p>تحصين المساء المكتوب</p></div></div>
-        <div class="diamond-card" onclick="openS('sleep')"><i>💤</i><div style="margin-right:15px;"><h2>أذكار النوم والليل</h2><p>سورة الملك وأدعية النوم</p></div></div>
+        <div class="diamond-card" onclick="openPrayers()"><i>🕌</i><div style="margin-right:15px;"><h2>الصلاة والأذان</h2><p>مواقيت ولايات الجزائر بدقة</p></div></div>
+        <div class="diamond-card" onclick="startKhatma()"><i>📖</i><div style="margin-right:15px;"><h2>ختمة رمضان</h2><p id="khatma-status">متابعة القراءة من صفحة ${localStorage.getItem('lastPage') || 1}</p></div></div>
+        <div class="diamond-card" onclick="openSearch()"><i>🔍</i><div style="margin-right:15px;"><h2>بحث في القرآن</h2><p>ابحث عن آية واعرف مابعدها</p></div></div>
+        <div class="diamond-card" onclick="openS('morning')"><i>☀️</i><div style="margin-right:15px;"><h2>أذكار الصباح</h2><p>البطاقة المصورة</p></div></div>
+        <div class="diamond-card" onclick="openS('evening')"><i>🌙</i><div style="margin-right:15px;"><h2>أذكار المساء</h2><p>البطاقة المصورة</p></div></div>
+        <div class="diamond-card" onclick="openS('sleep')"><i>💤</i><div style="margin-right:15px;"><h2>أذكار النوم</h2><p>البطاقة المصورة</p></div></div>
     </div>
 
     <div id="overlay">
-        <button class="close-btn" onclick="document.getElementById('overlay').style.display='none'">رجوع للقائمة ✖</button>
-        <div id="content" style="margin-top:20px;"></div>
+        <button class="close-btn" onclick="closeOverlay()">إغلاق وحفظ ✖</button>
+        <div id="content"></div>
     </div>
 
-    <script>
-        const azkar = {
-            morning: [
-                {t: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ.", c: 1},
-                {t: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ.", c: 3},
-                {t: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ (آية الكرسي)", c: 1}
-            ],
-            evening: [
-                {t: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ.", c: 1},
-                {t: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ.", c: 3}
-            ],
-            sleep: [
-                {t: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ.", c: 1},
-                {t: "قراءة سورة الملك (المنجية من عذاب القبر).", c: 1},
-                {t: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ.", c: 3}
-            ]
-        };
+    <audio id="adhanAudio" src="https://www.islamcan.com/adhan/makkah.mp3"></audio>
 
-        async function openS(type) {
+    <script>
+        let currentPage = parseInt(localStorage.getItem('lastPage')) || 1;
+        let prayerTimings = {};
+        const cities = ["الجزائر", "وهران", "قسنطينة", "عنابة", "سطيف", "تلمسان", "الجلفة", "بشار", "ورقلة", "الوادي", "تمنراست", "مستغانم", "بجاية", "سكيكدة", "البليدة"];
+
+        // --- وظائف الصلاة والأذان ---
+        async function openPrayers() {
             const list = document.getElementById('content');
-            document.getElementById('overlay').style.display='block';
-            list.innerHTML = "<h3 style='text-align:center;'>جاري تحميل البيانات...</h3>";
-            
-            if(azkar[type]) {
-                let h = `<h2 style='text-align:center; color:var(--gold);'>الأذكار المكتوبة</h2>`;
-                azkar[type].forEach(z => {
-                    h += `<div class="zekr-rect">${z.t}<br><span class="count-info">تكرار: ${z.c}</span></div>`;
-                });
-                list.innerHTML = h;
-            } 
-            else if(type === 'quran') {
-                try {
-                    const res = await fetch('https://api.alquran.cloud/v1/surah');
-                    const d = await res.json();
-                    let h = "<h2 style='text-align:center; color:var(--gold);'>سور القرآن الكريم</h2>";
-                    d.data.forEach(s => {
-                        h += `<div class="zekr-rect" style="font-size:18px; cursor:pointer;" onclick="alert('جاري تجهيز نص سورة ${s.name}...')">
-                                <span>${s.number}. ${s.name}</span>
-                              </div>`;
-                    });
-                    list.innerHTML = h;
-                } catch (e) {
-                    list.innerHTML = "حدث خطأ في جلب السور، تأكد من الاتصال بالإنترنت.";
-                }
+            document.getElementById('overlay').style.display = 'block';
+            list.innerHTML = `
+                <h2 style="color:var(--gold)">مواقيت الصلاة والأذان</h2>
+                <select id="citySelect" class="city-select" onchange="fetchPrayers(this.value)">
+                    ${cities.map(c => `<option value="${c}">${c}</option>`).join('')}
+                </select>
+                <div id="prayerResults"></div>
+                <button onclick="enableAudio()" style="padding:15px; width:90%; border-radius:10px; background:var(--gold); border:none; font-weight:bold; margin-top:10px;">تفعيل منبه الأذان 🔔</button>
+            `;
+            fetchPrayers("الجزائر");
+        }
+
+        async function fetchPrayers(city) {
+            const resDiv = document.getElementById('prayerResults');
+            const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Algeria&method=3`);
+            const data = await res.json();
+            prayerTimings = data.data.timings;
+            resDiv.innerHTML = `
+                <div class="prayer-card"><span>الفجر</span> <span>${prayerTimings.Fajr}</span></div>
+                <div class="prayer-card"><span>الظهر</span> <span>${prayerTimings.Dhuhr}</span></div>
+                <div class="prayer-card"><span>العصر</span> <span>${prayerTimings.Asr}</span></div>
+                <div class="prayer-card"><span>المغرب</span> <span>${prayerTimings.Maghrib}</span></div>
+                <div class="prayer-card"><span>العشاء</span> <span>${prayerTimings.Isha}</span></div>
+            `;
+            setInterval(checkAdhan, 60000);
+        }
+
+        function enableAudio() {
+            const audio = document.getElementById('adhanAudio');
+            audio.play().then(() => { audio.pause(); alert("تم تفعيل الأذان بنجاح!"); });
+        }
+
+        function checkAdhan() {
+            const now = new Date();
+            const current = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+            if (Object.values(prayerTimings).includes(current)) { document.getElementById('adhanAudio').play(); }
+        }
+
+        // --- وظائف الختمة والقرآن ---
+        function startKhatma() {
+            document.getElementById('overlay').style.display = 'block';
+            loadPage();
+        }
+
+        function loadPage() {
+            const list = document.getElementById('content');
+            list.innerHTML = `
+                <h3 style="color:var(--gold)">الصفحة رقم ${currentPage}</h3>
+                <img src="https://www.searchtruth.com/quran/images2/page${currentPage}.png" class="quran-img">
+                <div style="display:flex; justify-content:space-between; margin:20px auto; max-width:450px;">
+                    <button class="nav-btn" onclick="changePage(1)">التالي</button>
+                    <button class="nav-btn" onclick="changePage(-1)">السابق</button>
+                </div>
+            `;
+            localStorage.setItem('lastPage', currentPage);
+        }
+
+        function changePage(step) {
+            if ((currentPage + step) >= 1 && (currentPage + step) <= 604) {
+                currentPage += step;
+                loadPage();
             }
+        }
+
+        // --- وظيفة البحث ---
+        function openSearch() {
+            const list = document.getElementById('content');
+            document.getElementById('overlay').style.display = 'block';
+            list.innerHTML = `
+                <h2 style="color:var(--gold)">بحث في آيات الله</h2>
+                <input type="text" id="searchInput" class="search-box" placeholder="اكتب بداية الآية..." oninput="searchAyah()">
+                <div id="searchResults"></div>
+            `;
+        }
+
+        async function searchAyah() {
+            const query = document.getElementById('searchInput').value;
+            if (query.length < 3) return;
+            const res = await fetch(`https://api.alquran.cloud/v1/search/${query}/all/ar`);
+            const data = await res.json();
+            if (data.data.results.length > 0) {
+                const ayah = data.data.results[0];
+                document.getElementById('searchResults').innerHTML = `
+                    <div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:10px; margin-top:10px;">
+                        <p>${ayah.text}</p>
+                        <button class="nav-btn" style="width:100%" onclick="goToPage(${ayah.page})">اذهب للصفحة ${ayah.page}</button>
+                    </div>`;
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            loadPage();
+        }
+
+        function openS(type) {
+            const list = document.getElementById('content');
+            const imgs = {
+                morning: 'https://i.ibb.co/Vp6zK0S/1000032449.jpg',
+                evening: 'https://i.ibb.co/L9YmN4V/1000032450.jpg',
+                sleep: 'https://i.ibb.co/Rh0Xn7z/1000032448.jpg'
+            };
+            document.getElementById('overlay').style.display = 'block';
+            list.innerHTML = `<img src="${imgs[type]}" class="quran-img">`;
+        }
+
+        function closeOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('khatma-status').innerText = `أنت في الصفحة رقم ${currentPage}`;
         }
     </script>
 </body>
