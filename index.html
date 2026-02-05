@@ -1,120 +1,260 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المسلم الجزائري الشامل ❤️</title>
-    <style>
-        :root { --gold: #f1c40f; --dark-bg: #0d0d0d; --card-bg: rgba(255, 255, 255, 0.08); }
-        body { background-color: var(--dark-bg); font-family: 'Segoe UI', sans-serif; color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 500px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .full-card { grid-column: span 2; }
-        .card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; cursor: pointer; transition: 0.3s; text-align: center; }
-        .card:hover { border-color: var(--gold); background: rgba(241,196,15,0.05); }
-        .card i { font-size: 2rem; display: block; margin-bottom: 8px; }
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 2000; padding: 15px; overflow-y: auto; box-sizing: border-box; }
-        .quran-img { width: 100%; max-width: 450px; border-radius: 10px; border: 2px solid var(--gold); }
-        .btn-close { background: #e74c3c; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
-        .nav-btn { background: var(--gold); color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; width: 45%; cursor: pointer; }
-        .prayer-card { background: rgba(241, 196, 15, 0.1); border: 1px solid var(--gold); padding: 12px; border-radius: 10px; margin: 8px 0; display: flex; justify-content: space-between; }
-        .dua-box { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-right: 4px solid var(--gold); text-align: right; line-height: 1.6; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المسلم الجزائري</title>
+
+<!-- Telegram Web App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Amiri", serif;
+  background: #f5f5f5;
+  text-align: center;
+}
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#splash img {
+  width: 180px;
+}
+header {
+  background: url("images/mosque.jpg") center/cover;
+  color: white;
+  padding: 30px 10px;
+  font-size: 24px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 20px;
+}
+.grid div {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,.1);
+}
+section {
+  display: none;
+  padding: 20px;
+}
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  background: #1e6f5c;
+  color: white;
+  font-size: 16px;
+}
+.card {
+  background: white;
+  padding: 15px;
+  margin: 10px auto;
+  border-radius: 10px;
+  max-width: 600px;
+}
+#mushaf img {
+  width: 95%;
+  max-width: 600px;
+  margin: 10px auto;
+}
+#arrow {
+  font-size: 80px;
+  transition: transform 0.3s linear;
+}
+</style>
 </head>
+
 <body>
 
-    <h2 style="color: var(--gold); margin-bottom: 20px;">تطبيق المسلم الشامل 🇩🇿</h2>
+<!-- Splash -->
+<div id="splash">
+  <img src="images/splash-quran.jpg">
+  <h2>مرحبًا بك في المسلم الجزائري</h2>
+</div>
 
-    <div class="container">
-        <div class="card full-card" onclick="openKhatma()"><i>📖</i><h3>المصحف والختمة</h3><p id="status">الصفحة الحالية: 1</p></div>
-        
-        <div class="card" onclick="openPrayers()"><i>🕌</i><h3>مواقيت الصلاة</h3><p>ولايات الجزائر</p></div>
-        
-        <div class="card" onclick="openQibla()"><i>📍</i><h3>القبلة</h3><p>بوصلة الكعبة</p></div>
+<!-- الواجهة الرئيسية -->
+<div id="main" style="display:none">
+<header>المسلم الجزائري</header>
 
-        <div class="card" onclick="openDhikrMenu()"><i>☀️</i><h3>الأذكار اليومية</h3><p>الصباح والمساء</p></div>
+<div class="grid">
+  <div onclick="openSection('quran')">📖 القرآن الكريم</div>
+  <div onclick="openSection('adkar')">🌅 الأذكار</div>
+  <div onclick="openSection('prayer')">🕋 التوقيت والأذان</div>
+  <div onclick="openSection('duas')">🤲 الأدعية</div>
+  <div onclick="openSection('qibla')">🧭 القبلة</div>
+</div>
+</div>
 
-        <div class="card" onclick="openDuas()"><i>🤲</i><h3>الأدعية الجامعة</h3><p>أدعية نبوية</p></div>
-    </div>
+<!-- القرآن -->
+<section id="quran">
+<h2>القرآن الكريم</h2>
+<button onclick="loadMushaf('hafs')">مصحف حفص</button>
+<button onclick="loadMushaf('warsh')">مصحف ورش</button>
+<button onclick="openSection('khatma')">الختمة الذكية</button>
+<div id="mushaf"></div>
+</section>
 
-    <div id="overlay">
-        <button class="btn-close" onclick="closeOverlay()">رجوع للشاشة الرئيسية ✖</button>
-        <div id="content-area"></div>
-    </div>
+<!-- الختمة -->
+<section id="khatma">
+<h2>الختمة الذكية</h2>
+<div class="card">
+📌 يتم حفظ آخر صفحة تلقائيًا<br>
+جزء يوميًا – 20 صفحة
+</div>
+<button onclick="resumeReading()">متابعة القراءة</button>
+</section>
 
-    <audio id="adhanAudio" src="https://www.islamcan.com/adhan/makkah.mp3"></audio>
+<!-- الأذكار -->
+<section id="adkar">
+<h2>الأذكار</h2>
+<div class="card">
+<b>أذكار الصباح</b><br>
+أصبحنا وأصبح الملك لله...<br><br>
+<b>أذكار المساء</b><br>
+أمسينا وأمسى الملك لله...<br><br>
+<b>أذكار الليل</b><br>
+باسمك اللهم أموت وأحيا
+</div>
+</section>
 
-    <script>
-        let lastPage = localStorage.getItem('quranPage') || 1;
-        document.getElementById('status').innerText = `الصفحة الحالية: ${lastPage}`;
+<!-- الأدعية -->
+<section id="duas">
+<h2>أدعية مأثورة</h2>
+<div class="card">
+اللهم إنك عفو تحب العفو فاعفُ عنا<br><br>
+ربنا لا تزغ قلوبنا بعد إذ هديتنا<br><br>
+اللهم اجعل القرآن ربيع قلوبنا
+</div>
+</section>
 
-        // 1. وظائف القرآن والختمة والتفسير
-        function openKhatma() { showPage(lastPage); }
-        function showPage(num) {
-            if(num < 1 || num > 604) return;
-            lastPage = num; localStorage.setItem('quranPage', num);
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('content-area').innerHTML = `
-                <h3 style="color:var(--gold)">الصفحة ${num}</h3>
-                <img src="https://www.searchtruth.com/quran/images2/page${num}.png" class="quran-img">
-                <button onclick="getTafsir(${num})" style="background:none; color:var(--gold); border:1px solid var(--gold); padding:8px; width:100%; border-radius:5px; margin:10px 0;">📖 عرض التفسير</button>
-                <div id="tafsirArea"></div>
-                <div style="display:flex; justify-content:space-between;"><button class="nav-btn" onclick="showPage(${parseInt(num)+1})">التالي</button><button class="nav-btn" onclick="showPage(${parseInt(num)-1})">السابق</button></div>`;
-        }
-        async function getTafsir(page) {
-            const area = document.getElementById('tafsirArea'); area.innerHTML = "جاري التحميل...";
-            const res = await fetch(`https://api.alquran.cloud/v1/page/${page}/ar.jalalayn`);
-            const data = await res.json();
-            area.innerHTML = data.data.ayahs.map(a => `<div class="dua-box"><strong>آية ${a.numberInSurah}:</strong><br>${a.text}</div>`).join('');
-        }
+<!-- مواقيت الصلاة -->
+<section id="prayer">
+<h2>مواقيت الصلاة – الجزائر</h2>
+<select id="wilayaSelect"></select>
+<div id="prayerTimes" class="card"></div>
+</section>
 
-        // 2. مواقيت الصلاة (الجزائر)
-        async function openPrayers() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('content-area').innerHTML = `
-                <h3 style="color:var(--gold)">مواقيت الصلاة في الجزائر</h3>
-                <select id="city" onchange="loadTimes(this.value)" style="width:100%; padding:10px; border-radius:8px; background:#222; color:white; border:1px solid var(--gold);">
-                    <option value="Alger">الجزائر العاصمة</option><option value="Oran">وهران</option><option value="Constantine">قسنطينة</option><option value="El Oued">الوادي</option>
-                </select><div id="pTimes"></div><button onclick="enableAdhan()" style="margin-top:10px; background:var(--gold); width:100%; padding:10px; border:none; border-radius:8px; font-weight:bold;">تفعيل الأذان 🔔</button>`;
-            loadTimes("Alger");
-        }
-        async function loadTimes(city) {
-            const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Algeria&method=3`);
-            const data = await res.json(); const t = data.data.timings;
-            document.getElementById('pTimes').innerHTML = `
-                <div class="prayer-card"><span>الفجر</span><span>${t.Fajr}</span></div><div class="prayer-card"><span>الظهر</span><span>${t.Dhuhr}</span></div>
-                <div class="prayer-card"><span>العصر</span><span>${t.Asr}</span></div><div class="prayer-card"><span>المغرب</span><span>${t.Maghrib}</span></div>
-                <div class="prayer-card"><span>العشاء</span><span>${t.Isha}</span></div>`;
-        }
-        function enableAdhan() { document.getElementById('adhanAudio').play().then(() => { document.getElementById('adhanAudio').pause(); alert("تم التفعيل!"); }); }
+<!-- القبلة -->
+<section id="qibla">
+<h2>اتجاه القبلة</h2>
+<div id="arrow">⬆️</div>
+<p id="qiblaText">جاري تحديد الاتجاه...</p>
+</section>
 
-        // 3. الأذكار (بالصور التي أرسلتها)
-        function openDhikrMenu() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('content-area').innerHTML = `
-                <div class="card" onclick="showImg('https://i.ibb.co/Vp6zK0S/1000032449.jpg')">أذكار الصباح</div>
-                <div class="card" onclick="showImg('https://i.ibb.co/L9YmN4V/1000032450.jpg')" style="margin-top:10px">أذكار المساء</div>
-                <div class="card" onclick="showImg('https://i.ibb.co/Rh0Xn7z/1000032448.jpg')" style="margin-top:10px">أذكار النوم</div>`;
-        }
-        function showImg(url) { document.getElementById('content-area').innerHTML = `<img src="${url}" class="quran-img">`; }
+<script>
+// Telegram WebApp
+if (window.Telegram) {
+  Telegram.WebApp.expand();
+}
 
-        // 4. الأدعية
-        function openDuas() {
-            const duas = [
-                "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً",
-                "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار",
-                "اللهم إنك عفو كريم تحب العفو فاعفُ عني"
-            ];
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('content-area').innerHTML = `<h3 style="color:var(--gold)">أدعية مأثورة</h3>` + duas.map(d => `<div class="dua-box">${d}</div>`).join('');
-        }
+// Splash
+setTimeout(() => {
+  splash.style.display = "none";
+  main.style.display = "block";
+}, 2500);
 
-        // 5. القبلة
-        function openQibla() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('content-area').innerHTML = `<h3>بوصلة القبلة</h3><div style="width:150px; height:150px; border:4px solid var(--gold); border-radius:50%; margin:auto; position:relative;"><div id="arrow" style="width:4px; height:60px; background:red; position:absolute; left:73px; top:15px; transform-origin:bottom center;"></div></div><p>تأكد من فتح الموقع GPS</p>`;
-        }
+// التنقل
+function openSection(id) {
+  document.querySelectorAll("section").forEach(s => s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
 
-        function closeOverlay() { document.getElementById('overlay').style.display = 'none'; document.getElementById('status').innerText = `الصفحة الحالية: ${lastPage}`; }
-    </script>
+// المصحف
+function loadMushaf(type) {
+  const m = document.getElementById("mushaf");
+  m.innerHTML = "";
+  for (let i = 1; i <= 604; i++) {
+    const img = document.createElement("img");
+    img.src = `images/${type}/${i}.jpg`;
+    img.onclick = () => localStorage.setItem("lastPage", i);
+    m.appendChild(img);
+  }
+}
+
+// الختمة
+function resumeReading() {
+  const page = localStorage.getItem("lastPage") || 1;
+  loadMushaf("hafs");
+  setTimeout(() => {
+    document.querySelectorAll("#mushaf img")[page-1]?.scrollIntoView();
+  }, 500);
+}
+
+// الولايات 58
+const wilayas = [
+"أدرار","الشلف","الأغواط","أم البواقي","باتنة","بجاية","بسكرة","بشار","البليدة","البويرة",
+"تمنراست","تبسة","تلمسان","تيارت","تيزي وزو","الجزائر","الجلفة","جيجل","سطيف","سعيدة",
+"سكيكدة","سيدي بلعباس","عنابة","قالمة","قسنطينة","المدية","مستغانم","المسيلة","معسكر","ورقلة",
+"وهران","البيض","إليزي","برج بوعريريج","بومرداس","الطارف","تندوف","تيسمسيلت","الوادي","خنشلة",
+"سوق أهراس","تيبازة","ميلة","عين الدفلى","النعامة","عين تموشنت","غرداية","غليزان",
+"تيميمون","برج باجي مختار","أولاد جلال","بني عباس","إن صالح","إن قزام","تقرت","جانت","المغير","المنيعة"
+];
+
+wilayas.forEach(w => {
+  wilayaSelect.innerHTML += `<option>${w}</option>`;
+});
+
+wilayaSelect.onchange = () => {
+fetch(`https://api.aladhan.com/v1/timingsByCity?city=${wilayaSelect.value}&country=Algeria&method=3`)
+.then(r=>r.json())
+.then(d=>{
+let t=d.data.timings;
+prayerTimes.innerHTML=`
+الفجر: ${t.Fajr}<br>
+الظهر: ${t.Dhuhr}<br>
+العصر: ${t.Asr}<br>
+المغرب: ${t.Maghrib}<br>
+العشاء: ${t.Isha}
+`;
+});
+};
+
+// القبلة مع اهتزاز
+const kaabaLat=21.4225, kaabaLon=39.8262;
+let vibrated=false;
+
+navigator.geolocation.getCurrentPosition(pos=>{
+const lat=pos.coords.latitude*Math.PI/180;
+const lon=pos.coords.longitude*Math.PI/180;
+const dLon=(kaabaLon*Math.PI/180)-lon;
+const y=Math.sin(dLon)*Math.cos(kaabaLat*Math.PI/180);
+const x=Math.cos(lat)*Math.sin(kaabaLat*Math.PI/180)-
+Math.sin(lat)*Math.cos(kaabaLat*Math.PI/180)*Math.cos(dLon);
+const qibla=(Math.atan2(y,x)*180/Math.PI+360)%360;
+
+window.addEventListener("deviceorientation",e=>{
+if(e.alpha==null)return;
+const diff=Math.abs(qibla-e.alpha);
+arrow.style.transform=`rotate(${qibla-e.alpha}deg)`;
+if(diff<5||diff>355){
+qiblaText.textContent="✔️ أنت باتجاه القبلة";
+if(!vibrated && navigator.vibrate){
+navigator.vibrate([200,100,200]);
+vibrated=true;
+}
+}else{
+qiblaText.textContent="حرّك الهاتف";
+vibrated=false;
+}
+});
+});
+</script>
+
 </body>
 </html>
